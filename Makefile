@@ -6,11 +6,11 @@
 #    By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:28:26 by zhlim             #+#    #+#              #
-#    Updated: 2023/08/15 16:34:06 by zhlim            ###   ########.fr        #
+#    Updated: 2023/08/24 16:25:40 by zhlim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= $(addsuffix .c, philo)
+SRCS			= $(addsuffix .c, philo create_philo)
 
 OBJS			= $(patsubst %.c, %.o, $(SRCS))
 
@@ -20,6 +20,8 @@ CFLAGS			= -Wall -Werror -Wextra -g -fsanitize=address
 RM				= rm -f
 
 INCLUDES		= -I.
+
+NAME			= philo
 
 %.o:			%.c
 				$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
