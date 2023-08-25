@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/24 17:57:41 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/08/25 13:53:12 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,15 @@ int	invalidate(int ac, char **av)
 int	main(int ac, char **av)
 {
 	t_states    states;
+	int			err;
 
 	if (invalidate(ac, av + 1))
 		return (1);
 	assignment(av + 1, &states);
     if (create_philo(&states))
         return (1);
+	err = create_threads(&states);
+	if (err)
+		return (err);
+	free_philo(states.philos);
 }

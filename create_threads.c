@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_philo.c                                     :+:      :+:    :+:   */
+/*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/24 15:26:28 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/25 14:15:47 by zhlim            ###   ########.fr       */
+/*   Created: 2023/08/25 13:20:36 by zhlim             #+#    #+#             */
+/*   Updated: 2023/08/25 14:12:02 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    init_philo(t_philo *philo, t_states *states)
+void    *routine(void *args)
 {
-    philo->states = states;
+    t_philo    *philo;
+
+    philo = (t_philo *)args;
+    printf("thread id: %d\n", philo->id);
+    return (NULL);
 }
 
-t_philo    *init_philos(t_states *states)
+int    create_threads(t_states *states)
 {
     int i;
+    int err;
 
     i = 0;
-    states->philos = malloc(sizeof(t_philo) * states->number_philos);
-    if (!states->philos)
-        return (NULL);
     while (i < states->number_philos)
     {
-        init_philo(&states->philos[i], states);
-        i++;
+        states->philos[i].id = i + 1;
+        err = pthread_create(&states->philos[i].thread, NULL, routine, &states->philos[i]);
+        if (err)
+            return (err);
+        err = pthread_detach(states->philos[i].thread);
+        if (err)
+            return (err);
+        i++;  
     }
-    return (states->philos);
-}
-
-int    create_philo(t_states *states)
-{
-    if (!init_philos(states))
-        return (1);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/24 17:55:08 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/08/25 14:18:11 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 # include <pthread.h>
 # include <stdio.h>
 
+typedef struct  s_philo
+{
+    int             id;
+    pthread_t       thread;
+    pthread_mutex_t fork_l;
+    pthread_mutex_t *fork_r;
+    struct s_states *states;
+}           t_philo;
+
 typedef struct  s_states
 {
     int             number_philos;
@@ -28,18 +37,12 @@ typedef struct  s_states
     int             time_to_sleep;
     int             times_must_eat;
     int             someone_died;
-    struct s_philo  *philos;
+    t_philo         *philos;
     pthread_mutex_t *forks;
 }           t_states;
 
-typedef struct  s_philo
-{
-    t_states        *states;
-    pthread_t       thread;
-    pthread_mutex_t fork_l;
-    pthread_mutex_t *fork_r;
-}           t_philo;
-
-int    create_philo(t_states *states);
+int     create_philo(t_states *states);
+void    free_philo(t_philo *philos);
+int    create_threads(t_states *states);
 
 #endif
