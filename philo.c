@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/25 13:53:12 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/08/25 17:42:40 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	assignment(char **av, t_states *states)
 		states->times_must_eat = ft_atoi(*(av + 4));
 	else
 		states->times_must_eat = -1;
+	states->someone_died = 0;
 }
 
 int	invalidate(int ac, char **av)
@@ -85,16 +86,19 @@ int	invalidate(int ac, char **av)
 
 int	main(int ac, char **av)
 {
-	t_states    states;
+	t_states	states;
 	int			err;
 
 	if (invalidate(ac, av + 1))
 		return (1);
 	assignment(av + 1, &states);
-    if (create_philo(&states))
-        return (1);
+	if (create_philo(&states))
+		return (1);
+	err = create_forks(&states);
 	err = create_threads(&states);
 	if (err)
 		return (err);
-	free_philo(states.philos);
+	while (!states.someone_died)
+		;
+	ft_free(&states);
 }

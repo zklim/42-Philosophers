@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/25 14:18:11 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/08/25 17:39:52 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,8 @@ typedef struct  s_states
 int     create_philo(t_states *states);
 void    free_philo(t_philo *philos);
 int    create_threads(t_states *states);
+int    create_forks(t_states *states);
+void    ft_free(t_states *states);
+void    free_forks(t_states *states, int end);
 
 #endif
