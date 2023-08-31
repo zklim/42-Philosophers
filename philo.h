@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/25 17:39:52 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/08/31 17:35:53 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,23 @@
 # include <pthread.h>
 # include <stdio.h>
 
+#define RESET   "\x1B[0m"
+#define RED     "\x1B[31m"
+#define GREEN   "\x1B[32m"
+#define YELLOW  "\x1B[33m"
+#define BLUE    "\x1B[34m"
+#define MAGENTA "\x1B[35m"
+#define CYAN    "\x1B[36m"
+#define WHITE   "\x1B[37m"
+
 typedef struct  s_philo
 {
     int             id;
     pthread_t       thread;
     pthread_mutex_t fork_l;
     pthread_mutex_t *fork_r;
+    int             now;
+    int             last_eat;
     struct s_states *states;
 }           t_philo;
 
@@ -37,8 +48,9 @@ typedef struct  s_states
     int             time_to_sleep;
     int             times_must_eat;
     int             someone_died;
+    unsigned long   start;
     t_philo         *philos;
-    pthread_mutex_t *forks;
+    pthread_mutex_t lock;
 }           t_states;
 
 int     create_philo(t_states *states);

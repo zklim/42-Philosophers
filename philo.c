@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/25 17:42:40 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/08/31 15:15:03 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int	ft_atoi(const char *str)
 void	assignment(char **av, t_states *states)
 {
 	states->number_philos = ft_atoi(*av);
-	states->time_to_die = ft_atoi(*(av + 1));
-	states->time_to_eat = ft_atoi(*(av + 2));
-	states->time_to_sleep = ft_atoi(*(av + 3));
+	states->time_to_die = ft_atoi(*(av + 1)) * 1000;
+	states->time_to_eat = ft_atoi(*(av + 2)) * 1000;
+	states->time_to_sleep = ft_atoi(*(av + 3)) * 1000;
 	if (*(av + 4))
 		states->times_must_eat = ft_atoi(*(av + 4));
 	else
