@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/08/31 15:15:03 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/01 00:12:33 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,22 @@ int	invalidate(int ac, char **av)
 	return (0);
 }
 
+int	join(t_states *states)
+{
+	int	i;
+	int	err;
+
+	i = 0;
+	while (i < states->number_philos)
+	{
+		err = pthread_join(states->philos[i].thread, NULL);
+		if (err)
+			return (err);
+		i++;
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_states	states;
@@ -100,5 +116,6 @@ int	main(int ac, char **av)
 		return (err);
 	while (!states.someone_died)
 		;
+	join(&states);
 	ft_free(&states);
 }
