@@ -6,60 +6,27 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/01 00:12:33 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/01 15:49:33 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	nbr_ft(const char *str, int sign)
-{
-	int	i;
-	int	res;
-
-	i = 0;
-	res = 0;
-	while (*str == '0')
-		str++;
-	while (*str >= '0' && *str <= '9')
-	{
-		res = (res * 10) + (*str++ - '0');
-		i++;
-		if (i >= 20 && sign > 0)
-			return (-1);
-		else if (i >= 20 && sign < 0)
-			return (0);
-	}
-	return (res * sign);
-}
-
-int	ft_atoi(const char *str)
-{
-	int	sign;
-
-	sign = 1;
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '+' || *str == '-')
-	{
-		if (*str == '-')
-			sign *= -1;
-		str++;
-	}
-	return (nbr_ft(str, sign));
-}
-
-void	assignment(char **av, t_states *states)
+void	init_states(char **av, t_states *states)
 {
 	states->number_philos = ft_atoi(*av);
-	states->time_to_die = ft_atoi(*(av + 1)) * 1000;
-	states->time_to_eat = ft_atoi(*(av + 2)) * 1000;
-	states->time_to_sleep = ft_atoi(*(av + 3)) * 1000;
+	states->time_to_die = ft_atoi(*(av + 1));
+	states->time_to_eat = ft_atoi(*(av + 2));
+	states->time_to_sleep = ft_atoi(*(av + 3));
 	if (*(av + 4))
 		states->times_must_eat = ft_atoi(*(av + 4));
 	else
 		states->times_must_eat = -1;
 	states->someone_died = 0;
+	states->finish_eat = 0;
+	pthread_mutex_init(&states->lock, NULL);
+	pthread_mutex_init(&states->lock_died, NULL);
+	states->start = get_timestamp();
 }
 
 int	invalidate(int ac, char **av)
@@ -97,6 +64,14 @@ int	join(t_states *states)
 			return (err);
 		i++;
 	}
+	i = 0;
+	while (i < states->number_philos)
+	{
+		err = pthread_mutex_destroy(&states->philos[i].fork_l);
+		if (err)
+			return (err);
+		i++;
+	}
 	return (0);
 }
 
@@ -107,15 +82,19 @@ int	main(int ac, char **av)
 
 	if (invalidate(ac, av + 1))
 		return (1);
-	assignment(av + 1, &states);
+	init_states(av + 1, &states);
 	if (create_philo(&states))
 		return (1);
 	err = create_forks(&states);
+	if (err)
+		return (err);
 	err = create_threads(&states);
 	if (err)
 		return (err);
-	while (!states.someone_died)
-		;
-	join(&states);
-	ft_free(&states);
+	err = join(&states);
+	if (err)
+		return (err);
+	err = ft_free(&states);
+	if (err)
+		return (err);
 }

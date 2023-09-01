@@ -6,11 +6,11 @@
 #    By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:28:26 by zhlim             #+#    #+#              #
-#    Updated: 2023/08/25 17:34:04 by zhlim            ###   ########.fr        #
+#    Updated: 2023/09/01 17:07:43 by zhlim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= $(addsuffix .c, philo create_philo ft_free create_threads create_forks)
+SRCS			= $(addsuffix .c, philo create_philo ft_free create_threads create_forks utils monitor)
 
 OBJS			= $(patsubst %.c, %.o, $(SRCS))
 
