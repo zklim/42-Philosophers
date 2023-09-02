@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:56:40 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/01 17:50:20 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/02 17:51:36 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,11 @@ void	ft_usleep(int i)
 
 	start = get_timestamp();
 	while (get_timestamp() - start < i)
-		usleep(20);
+		usleep(500);
 }
 
-void	lock_print(t_philo *philo, int type)
+void	unlock_print(t_philo *philo, int type)
 {
-	pthread_mutex_lock(&philo->states->lock);
 	if (type == FORK)
 		printf(RED "%d %d has taken a fork\n" RESET, philo->now, philo->id);
 	else if (type == FORK2)

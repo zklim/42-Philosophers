@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/01 18:14:16 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/02 17:53:38 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_states
 	unsigned long	start;
 	t_philo			*philos;
 	pthread_mutex_t	lock;
-	pthread_mutex_t	lock_died;
 }					t_states;
 
 int					create_philo(t_states *states);
@@ -69,11 +68,12 @@ int					create_threads(t_states *states);
 int					create_forks(t_states *states);
 int					ft_free(t_states *states);
 int					free_forks(t_states *states, int end);
-void				lock_print(t_philo *philo, int type);
+void				unlock_print(t_philo *philo, int type);
 void				ft_usleep(int i);
 long				get_timestamp(void);
 int					nbr_ft(const char *str, int sign);
 int					ft_atoi(const char *str);
 void				*monitor(void *args);
+int					is_dead(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:16:06 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/01 18:14:41 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/02 17:55:33 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ int	ft_free(t_states *states)
 
 	err = 0;
 	err = pthread_mutex_destroy(&states->lock);
-	if (err)
-		return (err);
-	err = pthread_mutex_destroy(&states->lock_died);
 	if (err)
 		return (err);
 	err = free_forks(states, states->number_philos);
