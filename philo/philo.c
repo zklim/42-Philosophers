@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/02 17:48:53 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/03 16:39:00 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,6 @@ int	join(t_states *states)
 			return (err);
 		i++;
 	}
-	i = 0;
-	while (i < states->number_philos)
-	{
-		err = pthread_mutex_destroy(&states->philos[i].fork_l);
-		if (err)
-			return (err);
-		i++;
-	}
 	return (0);
 }
 
@@ -95,4 +87,5 @@ int	main(int ac, char **av)
 	err = ft_free(&states);
 	if (err)
 		return (err);
+	return (0);
 }

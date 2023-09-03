@@ -6,11 +6,11 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 17:53:14 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/02 17:53:32 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/03 16:30:55 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	is_dead(t_philo *philo)
 {

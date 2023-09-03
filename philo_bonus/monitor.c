@@ -6,11 +6,11 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:03:49 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/02 17:51:07 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/03 16:30:58 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	set(t_philo *philo)
 {

@@ -6,11 +6,11 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 17:29:25 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/01 18:13:45 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/03 16:31:05 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	create_forks(t_states *states)
 {
