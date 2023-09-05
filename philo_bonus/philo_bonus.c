@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/03 16:37:49 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/05 18:11:44 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_states(char **av, t_states *states)
 	states->someone_died = 0;
 	states->finish_eat = 0;
 	pthread_mutex_init(&states->lock, NULL);
+	states->forks = sem_open("gib_fork", O_CREAT, 0644, states->number_philos);
 }
 
 int	invalidate(int ac, char **av)
@@ -68,24 +69,12 @@ int	join(t_states *states)
 int	main(int ac, char **av)
 {
 	t_states	states;
-	int			err;
 
 	if (invalidate(ac, av + 1))
 		return (1);
 	init_states(av + 1, &states);
 	if (create_philo(&states))
 		return (1);
-	err = create_forks(&states);
-	if (err)
-		return (err);
-	err = create_threads(&states);
-	if (err)
-		return (err);
-	err = join(&states);
-	if (err)
-		return (err);
-	err = ft_free(&states);
-	if (err)
-		return (err);
+	ft_fork(&states);
 	return (0);
 }

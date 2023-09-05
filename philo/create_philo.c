@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:26:28 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/01 18:13:49 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/05 18:14:41 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_philo(t_philo *philo, t_states *states)
 {
+	philo->id = 0;
 	philo->states = states;
 	philo->now = 0;
 	philo->last_eat = 0;

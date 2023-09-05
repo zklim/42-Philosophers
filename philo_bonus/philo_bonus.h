@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/03 16:30:44 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/05 18:13:16 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <semaphore.h>
 
 # define RESET "\x1B[0m"
 # define RED "\x1B[31m"
@@ -37,14 +38,13 @@
 
 typedef struct s_philo
 {
+	pid_t			pid;
 	int				id;
 	int				now;
 	int				last_eat;
 	int				eat_count;
 	pthread_t		thread;
 	pthread_t		monitor;
-	pthread_mutex_t	fork_l;
-	pthread_mutex_t	*fork_r;
 	struct s_states	*states;
 }					t_philo;
 
@@ -60,14 +60,12 @@ typedef struct s_states
 	unsigned long	start;
 	t_philo			*philos;
 	pthread_mutex_t	lock;
+	sem_t			*forks;
 }					t_states;
 
 int					create_philo(t_states *states);
 void				free_philo(t_philo *philos);
-int					create_threads(t_states *states);
-int					create_forks(t_states *states);
 int					ft_free(t_states *states);
-int					free_forks(t_states *states, int end);
 void				unlock_print(t_philo *philo, int type);
 void				ft_usleep(int i);
 long				get_timestamp(void);
@@ -75,5 +73,6 @@ int					nbr_ft(const char *str, int sign);
 int					ft_atoi(const char *str);
 void				*monitor(void *args);
 int					is_dead(t_philo *philo);
+void				ft_fork(t_states *states);
 
 #endif
