@@ -6,7 +6,7 @@
 #    By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:28:26 by zhlim             #+#    #+#              #
-#    Updated: 2023/09/05 16:15:52 by zhlim            ###   ########.fr        #
+#    Updated: 2023/09/06 12:58:02 by zhlim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SRCS			= $(addsuffix .c, philo_bonus ft_free ft_fork create_philo utils utils2 m
 OBJS			= $(patsubst %.c, %.o, $(SRCS))
 
 CC				= gcc
-CFLAGS			= -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS			= -Wall -Werror -Wextra -g
 
 RM				= rm -f
 

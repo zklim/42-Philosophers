@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/02 17:53:38 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/06 12:27:22 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_states
 	int				times_must_eat;
 	int				someone_died;
 	int				finish_eat;
-	unsigned long	start;
+	long			start;
 	t_philo			*philos;
 	pthread_mutex_t	lock;
 }					t_states;

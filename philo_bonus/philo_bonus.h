@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/05 18:13:16 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/06 12:32:20 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_philo
 	int				now;
 	int				last_eat;
 	int				eat_count;
-	pthread_t		thread;
 	pthread_t		monitor;
 	struct s_states	*states;
 }					t_philo;
@@ -57,7 +56,7 @@ typedef struct s_states
 	int				times_must_eat;
 	int				someone_died;
 	int				finish_eat;
-	unsigned long	start;
+	long			start;
 	t_philo			*philos;
 	pthread_mutex_t	lock;
 	sem_t			*forks;
