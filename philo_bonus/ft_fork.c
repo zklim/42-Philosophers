@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:20:36 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 13:15:47 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/06 19:00:40 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_exit(int i)
 void	take_fork(t_philo *philo)
 {
 	sem_wait(philo->states->forks);
-	pthread_mutex_lock(&philo->states->lock);
+	sem_wait(philo->states->print);
 	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 	{
@@ -36,7 +36,7 @@ void	eat(t_philo *philo)
 {
 	take_fork(philo);
 	sem_wait(philo->states->forks);
-	pthread_mutex_lock(&philo->states->lock);
+	sem_wait(philo->states->print);
 	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 	{
@@ -46,7 +46,7 @@ void	eat(t_philo *philo)
 		ft_exit(0);
 	}
 	unlock_print(philo, FORK2);
-	pthread_mutex_lock(&philo->states->lock);
+	sem_wait(philo->states->print);
 	philo->last_eat = get_timestamp() - philo->states->start;
 	unlock_print(philo, EAT);
 	ft_usleep(philo->states->time_to_eat);
@@ -56,13 +56,13 @@ void	eat(t_philo *philo)
 
 int	sleep_think(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->states->lock);
+	sem_wait(philo->states->print);
 	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 		ft_exit(0);
 	unlock_print(philo, SLEEP);
 	ft_usleep(philo->states->time_to_sleep);
-	pthread_mutex_lock(&philo->states->lock);
+	sem_wait(philo->states->print);
 	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 		ft_exit(0);
@@ -75,6 +75,7 @@ void	routine(t_philo *philo)
 {
 	if (!(philo->id % 2))
 		usleep(1000);
+	sem_wait(philo->states->dead);
 	pthread_create(&philo->monitor, NULL, monitor, philo);
 	pthread_detach(philo->monitor);
 	while (1)
@@ -103,12 +104,21 @@ void	ft_fork(t_states *states)
 	i = 0;
 	if (states->philos[i].pid != 0)
 	{
+		usleep(1000);
+		sem_wait(states->dead);
 		while (i < states->number_philos)
 		{
+			kill(states->philos[i].pid, SIGTERM);
 			waitpid(states->philos[i].pid, NULL, 0);
 			i++;
 		}
-		sem_close(states->forks);
-		sem_unlink("gib_fork");
+		ft_sem_close(states);
+		ft_sem_unlink();
 	}
 }
+
+// void	ft_fork(t_states *states)
+// {
+// 	(void)states;
+// 	ft_sem_unlink();
+// }

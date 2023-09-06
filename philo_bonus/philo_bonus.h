@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 12:32:20 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/06 18:46:52 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <semaphore.h>
+# include <signal.h>
 
 # define RESET "\x1B[0m"
 # define RED "\x1B[31m"
@@ -60,6 +61,8 @@ typedef struct s_states
 	t_philo			*philos;
 	pthread_mutex_t	lock;
 	sem_t			*forks;
+	sem_t			*dead;
+	sem_t			*print;
 }					t_states;
 
 int					create_philo(t_states *states);
@@ -73,5 +76,7 @@ int					ft_atoi(const char *str);
 void				*monitor(void *args);
 int					is_dead(t_philo *philo);
 void				ft_fork(t_states *states);
+void				ft_sem_close(t_states *states);
+void				ft_sem_unlink();
 
 #endif

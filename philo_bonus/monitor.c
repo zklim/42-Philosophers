@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:03:49 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 12:38:48 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/06 19:04:39 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	set_eat(t_philo *philo)
 {
 	philo->states->finish_eat++;
 	if (philo->states->finish_eat == philo->states->number_philos)
-		philo->states->someone_died = 1;
-	pthread_mutex_unlock(&philo->states->lock);
+		// sem_post(philo->states->dead);
+	sem_post(philo->states->print);
 }
 
 void	set_dead(t_philo *philo)
 {
-	philo->states->someone_died = 1;
 	unlock_print(philo, DIED);
+	sem_post(philo->states->dead);
 }
 
 void	*monitor(void *args)
@@ -33,7 +33,7 @@ void	*monitor(void *args)
 	philo = (t_philo *)args;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->states->lock);
+		sem_wait(philo->states->print);
 		philo->now = get_timestamp() - philo->states->start;
 		if (philo->states->someone_died
 			|| philo->eat_count == philo->states->times_must_eat)
@@ -48,7 +48,7 @@ void	*monitor(void *args)
 			set_dead(philo);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->states->lock);
+		sem_post(philo->states->print);
 		usleep(25);
 	}
 	return (NULL);
