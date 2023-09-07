@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 18:46:52 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 01:37:50 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_states
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				times_must_eat;
-	int				someone_died;
 	int				finish_eat;
 	long			start;
 	t_philo			*philos;
@@ -63,6 +62,8 @@ typedef struct s_states
 	sem_t			*forks;
 	sem_t			*dead;
 	sem_t			*print;
+	sem_t			*eats;
+	pid_t			sem_eat;
 }					t_states;
 
 int					create_philo(t_states *states);

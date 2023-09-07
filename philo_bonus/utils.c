@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:56:40 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 18:27:32 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 00:10:49 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ void	unlock_print(t_philo *philo, int type)
 	else if (type == THINK)
 		printf(CYAN "%d %d is thinking\n" RESET, philo->now, philo->id);
 	else if (type == DIED)
+	{
 		printf(YELLOW "%d %d died\n" RESET, philo->now, philo->id);
+		return ;
+	}
 	sem_post(philo->states->print);
 }

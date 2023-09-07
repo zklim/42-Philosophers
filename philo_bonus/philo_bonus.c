@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 18:21:18 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 00:45:16 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@ void	init_states(char **av, t_states *states)
 		states->times_must_eat = ft_atoi(*(av + 4));
 	else
 		states->times_must_eat = -1;
-	states->someone_died = 0;
 	states->finish_eat = 0;
 	pthread_mutex_init(&states->lock, NULL);
 	states->forks = sem_open("gib_fork", O_CREAT, 0644, states->number_philos);
 	states->dead = sem_open("dead", O_CREAT, 0644, states->number_philos);
 	states->print = sem_open("print", O_CREAT, 0644, 1);
+	if (states->times_must_eat > 0)
+	{
+		states->eats = sem_open("eat", O_CREAT, 0644, states->number_philos);
+	}
+		
 }
 
 int	invalidate(int ac, char **av)
@@ -62,5 +66,6 @@ int	main(int ac, char **av)
 	if (create_philo(&states))
 		return (1);
 	ft_fork(&states);
+	ft_free(&states);
 	return (0);
 }
