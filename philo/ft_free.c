@@ -6,16 +6,11 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:16:06 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/02 17:55:33 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 17:42:55 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	free_philo(t_philo *philos)
-{
-	free(philos);
-}
 
 int	free_forks(t_states *states, int end)
 {
@@ -44,6 +39,6 @@ int	ft_free(t_states *states)
 	err = free_forks(states, states->number_philos);
 	if (err)
 		return (err);
-	free_philo(states->philos);
+	free(states->philos);
 	return (err);
 }

@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:20:36 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/02 17:55:11 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 17:42:39 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ int	take_fork(t_philo *philo)
 		return (1);
 	}
 	unlock_print(philo, FORK);
+	if (philo->states->number_philos == 1)
+	{
+		while (1)
+		{
+			pthread_mutex_lock(&philo->states->lock);
+			if (is_dead(philo))
+			{
+				pthread_mutex_unlock(&philo->fork_l);
+				return (1);
+			}
+			pthread_mutex_unlock(&philo->states->lock);
+			usleep(25);
+		}
+	}
 	return (0);
 }
 
@@ -96,12 +110,11 @@ int	create_threads(t_states *states)
 		states->philos[i].id = i + 1;
 		err = pthread_create(&states->philos[i].thread, NULL, routine,
 				&states->philos[i]);
+		err = pthread_detach(states->philos[i].thread);
 		if (err)
 			return (err);
 		i++;
 		usleep(25);
 	}
-	while (!states->someone_died)
-		;
 	return (0);
 }

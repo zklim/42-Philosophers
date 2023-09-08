@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/03 16:39:00 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 17:42:51 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,19 @@ int	invalidate(int ac, char **av)
 	return (0);
 }
 
-int	join(t_states *states)
+void	check_dead(t_states *states)
 {
-	int	i;
-	int	err;
-
-	i = 0;
-	while (i < states->number_philos)
+	while (1)
 	{
-		err = pthread_join(states->philos[i].thread, NULL);
-		if (err)
-			return (err);
-		i++;
+		pthread_mutex_lock(&states->lock);
+		if (states->someone_died)
+		{
+			pthread_mutex_unlock(&states->lock);
+			return ;
+		}
+		pthread_mutex_unlock(&states->lock);
+		usleep(25);
 	}
-	return (0);
 }
 
 int	main(int ac, char **av)
@@ -81,9 +80,7 @@ int	main(int ac, char **av)
 	err = create_threads(&states);
 	if (err)
 		return (err);
-	err = join(&states);
-	if (err)
-		return (err);
+	check_dead(&states);
 	err = ft_free(&states);
 	if (err)
 		return (err);

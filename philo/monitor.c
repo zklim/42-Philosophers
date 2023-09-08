@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:03:49 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 12:37:43 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 17:35:18 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ void	*monitor(void *args)
 			set_eat(philo);
 			break ;
 		}
-		else if (philo->now - philo->last_eat >= philo->states->time_to_die
-			|| philo->states->time_to_die < philo->states->time_to_eat
-			|| philo->states->number_philos == 1)
+		else if (philo->now - philo->last_eat >= philo->states->time_to_die)
 		{
 			set_dead(philo);
 			break ;
