@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 01:37:50 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 14:04:06 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void				*monitor(void *args);
 int					is_dead(t_philo *philo);
 void				ft_fork(t_states *states);
 void				ft_sem_close(t_states *states);
-void				ft_sem_unlink();
+void				ft_sem_unlink(void);
+void				routine(t_philo *philo);
 
 #endif

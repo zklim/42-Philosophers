@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 17:53:14 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 01:35:15 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/08 14:01:09 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_dead(t_philo *philo)
 	return (0);
 }
 
-void	ft_sem_unlink()
+void	ft_sem_unlink(void)
 {
 	sem_unlink("gib_fork");
 	sem_unlink("dead");
@@ -42,4 +42,12 @@ void	ft_sem_close(t_states *states)
 	sem_close(states->dead);
 	sem_close(states->print);
 	sem_close(states->eats);
+}
+
+int	ft_free(t_states *states)
+{
+	ft_sem_close(states);
+	ft_sem_unlink();
+	free(states->philos);
+	return (0);
 }

@@ -6,16 +6,17 @@
 #    By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:28:26 by zhlim             #+#    #+#              #
-#    Updated: 2023/09/07 17:40:59 by zhlim            ###   ########.fr        #
+#    Updated: 2023/09/08 14:01:23 by zhlim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= $(addsuffix .c, philo_bonus ft_free ft_fork create_philo utils utils2 monitor)
+SRCS			= $(addsuffix .c, philo_bonus routine ft_fork create_philo utils utils2 monitor)
 
 OBJS			= $(patsubst %.c, %.o, $(SRCS))
 
 CC				= gcc
-CFLAGS			= -Wall -Werror -Wextra -g
+CFLAGS			= -Wall -Werror -Wextra
+# -g
 
 RM				= rm -f
 
