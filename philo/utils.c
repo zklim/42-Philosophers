@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:56:40 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 12:25:35 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/10 16:18:19 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,20 @@ void	ft_usleep(int i)
 		usleep(500);
 }
 
-void	unlock_print(t_philo *philo, int type)
+void	ft_print(t_philo *philo, int type, int now)
 {
+	pthread_mutex_lock(&philo->states->print);
 	if (type == FORK)
-		printf(RED "%d %d has taken a fork\n" RESET, philo->now, philo->id);
+		printf(RED "%d %d has taken a fork\n" RESET, now, philo->id);
 	else if (type == FORK2)
-		printf(MAGENTA "%d %d has taken a fork\n" RESET, philo->now, philo->id);
+		printf(MAGENTA "%d %d has taken a fork\n" RESET, now, philo->id);
 	else if (type == EAT)
-	{
 		printf(GREEN "%d %d is eating\n" RESET, philo->last_eat, philo->id);
-		philo->eat_count++;
-	}
 	else if (type == SLEEP)
-		printf(BLUE "%d %d is sleeping\n" RESET, philo->now, philo->id);
+		printf(BLUE "%d %d is sleeping\n" RESET, now, philo->id);
 	else if (type == THINK)
-		printf(CYAN "%d %d is thinking\n" RESET, philo->now, philo->id);
+		printf(CYAN "%d %d is thinking\n" RESET, now, philo->id);
 	else if (type == DIED)
-		printf(YELLOW "%d %d died\n" RESET, philo->now, philo->id);
-	pthread_mutex_unlock(&philo->states->lock);
+		printf(YELLOW "%d %d died\n" RESET, now, philo->id);
+	pthread_mutex_unlock(&philo->states->print);
 }

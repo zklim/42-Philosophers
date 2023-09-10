@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 17:42:51 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/10 17:04:26 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_states(char **av, t_states *states)
 	states->someone_died = 0;
 	states->finish_eat = 0;
 	pthread_mutex_init(&states->lock, NULL);
+	pthread_mutex_init(&states->print, NULL);
 }
 
 int	invalidate(int ac, char **av)
@@ -49,18 +50,52 @@ int	invalidate(int ac, char **av)
 	return (0);
 }
 
+int	check_dead2(t_philo *philo, t_local_p *local)
+{
+	pthread_mutex_lock(&philo->states->lock);
+	if (philo->eat_count == local->times_must_eat
+		&& !philo->recorded)
+	{
+		philo->states->finish_eat++;
+		philo->recorded = 1;
+		if (philo->states->finish_eat == local->number_philos)
+		{
+			philo->states->someone_died = 1;
+			pthread_mutex_unlock(&philo->states->lock);
+			return (1);
+		}
+	}
+	else if (local->now - philo->last_eat
+		>= local->time_to_die)
+	{
+		philo->states->someone_died = 1;
+		ft_print(philo, DIED, local->now);
+		pthread_mutex_unlock(&philo->states->lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->states->lock);
+	return (0);
+}
+
 void	check_dead(t_states *states)
 {
-	while (1)
+	t_local_p	local;
+
+	local.i = 0;
+	pthread_mutex_lock(&states->lock);
+	local.times_must_eat = states->times_must_eat;
+	local.time_to_die = states->time_to_die;
+	local.number_philos = states->number_philos;
+	pthread_mutex_unlock(&states->lock);
+	while (local.i < states->number_philos)
 	{
-		pthread_mutex_lock(&states->lock);
-		if (states->someone_died)
-		{
-			pthread_mutex_unlock(&states->lock);
-			return ;
-		}
-		pthread_mutex_unlock(&states->lock);
-		usleep(25);
+		local.now = get_timestamp() - states->start;
+		if (check_dead2(&states->philos[local.i], &local))
+			break ;
+		local.i++;
+		if (local.i == states->number_philos)
+			local.i = 0;
+		usleep(10);
 	}
 }
 

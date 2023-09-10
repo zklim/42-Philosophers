@@ -6,93 +6,91 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:20:36 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 17:42:39 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/10 17:14:37 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	take_fork(t_philo *philo)
+int	take_fork(t_philo *philo, t_local_c *local)
 {
 	pthread_mutex_lock(&philo->fork_l);
-	pthread_mutex_lock(&philo->states->lock);
-	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 	{
 		pthread_mutex_unlock(&philo->fork_l);
 		return (1);
 	}
-	unlock_print(philo, FORK);
-	if (philo->states->number_philos == 1)
+	local->now = get_timestamp() - local->start;
+	ft_print(philo, FORK, local->now);
+	if (local->number_philos == 1)
 	{
 		while (1)
-		{
-			pthread_mutex_lock(&philo->states->lock);
 			if (is_dead(philo))
-			{
-				pthread_mutex_unlock(&philo->fork_l);
 				return (1);
-			}
-			pthread_mutex_unlock(&philo->states->lock);
-			usleep(25);
-		}
 	}
-	return (0);
-}
-
-int	eat(t_philo *philo)
-{
-	if (take_fork(philo))
-		return (1);
 	pthread_mutex_lock(philo->fork_r);
-	pthread_mutex_lock(&philo->states->lock);
-	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 	{
 		pthread_mutex_unlock(philo->fork_r);
 		pthread_mutex_unlock(&philo->fork_l);
 		return (1);
 	}
-	unlock_print(philo, FORK2);
+	local->now = get_timestamp() - local->start;
+	ft_print(philo, FORK2, local->now);
+	return (0);
+}
+
+int	eat(t_philo *philo, t_local_c *local)
+{
+	if (is_dead(philo))
+		return (1);
 	pthread_mutex_lock(&philo->states->lock);
-	philo->last_eat = get_timestamp() - philo->states->start;
-	unlock_print(philo, EAT);
-	ft_usleep(philo->states->time_to_eat);
+	philo->last_eat = get_timestamp() - local->start;
+	ft_print(philo, EAT, local->now);
+	philo->eat_count++;
+	pthread_mutex_unlock(&philo->states->lock);
+	ft_usleep(local->eat_time);
 	pthread_mutex_unlock(philo->fork_r);
 	pthread_mutex_unlock(&philo->fork_l);
 	return (0);
 }
 
-int	sleep_think(t_philo *philo)
+int	sleep_think(t_philo *philo, t_local_c *local)
 {
-	pthread_mutex_lock(&philo->states->lock);
-	philo->now = get_timestamp() - philo->states->start;
 	if (is_dead(philo))
 		return (1);
-	unlock_print(philo, SLEEP);
-	ft_usleep(philo->states->time_to_sleep);
-	pthread_mutex_lock(&philo->states->lock);
-	philo->now = get_timestamp() - philo->states->start;
+	local->now = get_timestamp() - local->start;
+	ft_print(philo, SLEEP, local->now);
+	ft_usleep(local->sleep_time);
 	if (is_dead(philo))
 		return (1);
-	unlock_print(philo, THINK);
+	local->now = get_timestamp() - local->start;
+	ft_print(philo, THINK, local->now);
 	return (0);
 }
 
 void	*routine(void *args)
 {
-	t_philo	*philo;
+	t_philo		*philo;
+	t_local_c	local;
 
 	philo = (t_philo *)args;
+	local.now = 0;
 	if (!(philo->id % 2))
-		usleep(1000);
-	pthread_create(&philo->monitor, NULL, monitor, philo);
-	pthread_detach(philo->monitor);
+		usleep(100);
+	pthread_mutex_lock(&philo->states->lock);
+	local.eat_time = philo->states->time_to_eat;
+	local.sleep_time = philo->states->time_to_sleep;
+	local.start = philo->states->start;
+	local.number_philos = philo->states->number_philos;
+	pthread_mutex_unlock(&philo->states->lock);
 	while (1)
 	{
-		if (eat(philo))
+		if (take_fork(philo, &local))
 			break ;
-		if (sleep_think(philo))
+		if (eat(philo, &local))
+			break ;
+		if (sleep_think(philo, &local))
 			break ;
 	}
 	return (NULL);
@@ -110,7 +108,6 @@ int	create_threads(t_states *states)
 		states->philos[i].id = i + 1;
 		err = pthread_create(&states->philos[i].thread, NULL, routine,
 				&states->philos[i]);
-		err = pthread_detach(states->philos[i].thread);
 		if (err)
 			return (err);
 		i++;

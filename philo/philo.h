@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/06 12:27:22 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/10 17:09:36 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,31 @@
 # define THINK 4
 # define DIED 5
 
+typedef struct s_local_p
+{
+	int				i;
+	int				now;
+	int				times_must_eat;
+	int				time_to_die;
+	int				number_philos;
+}					t_local_p;
+
+typedef struct s_local_c
+{
+	int				eat_time;
+	int				sleep_time;
+	int				start;
+	int				now;
+	int				number_philos;
+}					t_local_c;
+
 typedef struct s_philo
 {
 	int				id;
-	int				now;
 	int				last_eat;
 	int				eat_count;
+	int				recorded;
 	pthread_t		thread;
-	pthread_t		monitor;
 	pthread_mutex_t	fork_l;
 	pthread_mutex_t	*fork_r;
 	struct s_states	*states;
@@ -60,6 +77,7 @@ typedef struct s_states
 	long			start;
 	t_philo			*philos;
 	pthread_mutex_t	lock;
+	pthread_mutex_t	print;
 }					t_states;
 
 int					create_philo(t_states *states);
@@ -68,12 +86,11 @@ int					create_threads(t_states *states);
 int					create_forks(t_states *states);
 int					ft_free(t_states *states);
 int					free_forks(t_states *states, int end);
-void				unlock_print(t_philo *philo, int type);
+void				ft_print(t_philo *philo, int type, int now);
 void				ft_usleep(int i);
 long				get_timestamp(void);
 int					nbr_ft(const char *str, int sign);
 int					ft_atoi(const char *str);
-void				*monitor(void *args);
 int					is_dead(t_philo *philo);
 
 #endif

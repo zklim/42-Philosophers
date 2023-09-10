@@ -6,16 +6,17 @@
 #    By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:28:26 by zhlim             #+#    #+#              #
-#    Updated: 2023/09/08 17:26:21 by zhlim            ###   ########.fr        #
+#    Updated: 2023/09/10 17:15:03 by zhlim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= $(addsuffix .c, philo create_philo ft_free create_threads create_forks utils utils2 monitor)
+SRCS			= $(addsuffix .c, philo create_philo ft_free create_threads create_forks utils utils2)
 
 OBJS			= $(patsubst %.c, %.o, $(SRCS))
 
 CC				= gcc
-CFLAGS			= -Wall -Werror -Wextra -g -fsanitize=thread
+CFLAGS			= -Wall -Werror -Wextra
+# -g -fsanitize=thread
 
 RM				= rm -f
 
