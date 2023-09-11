@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:20:36 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/10 17:14:37 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 01:09:59 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 int	take_fork(t_philo *philo, t_local_c *local)
 {
-	pthread_mutex_lock(&philo->fork_l);
+	pthread_mutex_lock(&philo->fork.left);
 	if (is_dead(philo))
 	{
-		pthread_mutex_unlock(&philo->fork_l);
+		pthread_mutex_unlock(&philo->fork.left);
 		return (1);
 	}
 	local->now = get_timestamp() - local->start;
-	ft_print(philo, FORK, local->now);
+	ft_print(philo, FORK_LEFT, local->now);
 	if (local->number_philos == 1)
 	{
 		while (1)
 			if (is_dead(philo))
 				return (1);
 	}
-	pthread_mutex_lock(philo->fork_r);
+	pthread_mutex_lock(philo->fork.right);
 	if (is_dead(philo))
 	{
-		pthread_mutex_unlock(philo->fork_r);
-		pthread_mutex_unlock(&philo->fork_l);
+		pthread_mutex_unlock(philo->fork.right);
+		pthread_mutex_unlock(&philo->fork.left);
 		return (1);
 	}
 	local->now = get_timestamp() - local->start;
-	ft_print(philo, FORK2, local->now);
+	ft_print(philo, FORK_RIGHT, local->now);
 	return (0);
 }
 
@@ -50,8 +50,8 @@ int	eat(t_philo *philo, t_local_c *local)
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->states->lock);
 	ft_usleep(local->eat_time);
-	pthread_mutex_unlock(philo->fork_r);
-	pthread_mutex_unlock(&philo->fork_l);
+	pthread_mutex_unlock(philo->fork.right);
+	pthread_mutex_unlock(&philo->fork.left);
 	return (0);
 }
 

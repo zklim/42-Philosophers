@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:56:40 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/10 16:18:19 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 01:11:35 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ void	ft_usleep(int i)
 		usleep(500);
 }
 
-void	ft_print(t_philo *philo, int type, int now)
+void	ft_print(t_philo *philo, t_actions type, int now)
 {
 	pthread_mutex_lock(&philo->states->print);
-	if (type == FORK)
+	if (type == FORK_LEFT)
 		printf(RED "%d %d has taken a fork\n" RESET, now, philo->id);
-	else if (type == FORK2)
+	else if (type == FORK_RIGHT)
 		printf(MAGENTA "%d %d has taken a fork\n" RESET, now, philo->id);
 	else if (type == EAT)
 		printf(GREEN "%d %d is eating\n" RESET, philo->last_eat, philo->id);

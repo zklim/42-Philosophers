@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/10 17:09:36 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 01:12:09 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@
 # define MAGENTA "\x1B[35m"
 # define CYAN "\x1B[36m"
 
-# define FORK 0
-# define FORK2 1
-# define EAT 2
-# define SLEEP 3
-# define THINK 4
-# define DIED 5
+typedef enum e_actions
+{
+	FORK_LEFT,
+	FORK_RIGHT,
+	EAT,
+	SLEEP,
+	THINK,
+	DIED
+}	t_actions;
 
 typedef struct s_local_p
 {
@@ -53,6 +56,12 @@ typedef struct s_local_c
 	int				number_philos;
 }					t_local_c;
 
+typedef struct s_fork
+{
+	pthread_mutex_t	left;
+	pthread_mutex_t	*right;
+}					t_fork;
+
 typedef struct s_philo
 {
 	int				id;
@@ -60,8 +69,7 @@ typedef struct s_philo
 	int				eat_count;
 	int				recorded;
 	pthread_t		thread;
-	pthread_mutex_t	fork_l;
-	pthread_mutex_t	*fork_r;
+	t_fork			fork;
 	struct s_states	*states;
 }					t_philo;
 
@@ -86,7 +94,7 @@ int					create_threads(t_states *states);
 int					create_forks(t_states *states);
 int					ft_free(t_states *states);
 int					free_forks(t_states *states, int end);
-void				ft_print(t_philo *philo, int type, int now);
+void				ft_print(t_philo *philo, t_actions type, int now);
 void				ft_usleep(int i);
 long				get_timestamp(void);
 int					nbr_ft(const char *str, int sign);
