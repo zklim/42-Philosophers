@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:20:36 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 14:23:54 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 18:42:07 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	sem_eat(t_states *states)
 	i = 0;
 	while (i < states->number_philos)
 	{
-		sem_wait(states->eats);
+		sem_wait(states->sem.eats);
 		i++;
 	}
-	sem_post(states->dead);
+	sem_post(states->sem.dead);
 	exit(0);
 }
 
@@ -35,7 +35,7 @@ void	parenting(t_states *states, int i)
 		if (states->sem_eat == 0)
 			sem_eat(states);
 	}
-	sem_wait(states->dead);
+	sem_wait(states->sem.dead);
 	while (i < states->number_philos)
 	{
 		kill(states->philos[i].pid, SIGTERM);

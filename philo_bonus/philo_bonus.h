@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:15 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 14:04:06 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 18:41:14 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@
 # define MAGENTA "\x1B[35m"
 # define CYAN "\x1B[36m"
 
-# define FORK 0
-# define FORK2 1
-# define EAT 2
-# define SLEEP 3
-# define THINK 4
-# define DIED 5
+typedef enum e_actions
+{
+	FORK_LEFT,
+	FORK_RIGHT,
+	EAT,
+	SLEEP,
+	THINK,
+	DIED
+}	t_actions;
 
 typedef struct s_philo
 {
@@ -45,8 +48,17 @@ typedef struct s_philo
 	int				last_eat;
 	int				eat_count;
 	pthread_t		monitor;
+	pthread_mutex_t	lock;
 	struct s_states	*states;
 }					t_philo;
+
+typedef struct s_sem
+{
+	sem_t			*forks;
+	sem_t			*dead;
+	sem_t			*eats;
+	sem_t			*print;
+}				t_sem;
 
 typedef struct s_states
 {
@@ -58,18 +70,14 @@ typedef struct s_states
 	int				finish_eat;
 	long			start;
 	t_philo			*philos;
-	pthread_mutex_t	lock;
-	sem_t			*forks;
-	sem_t			*dead;
-	sem_t			*print;
-	sem_t			*eats;
+	t_sem			sem;
 	pid_t			sem_eat;
 }					t_states;
 
 int					create_philo(t_states *states);
 void				free_philo(t_philo *philos);
 int					ft_free(t_states *states);
-void				unlock_print(t_philo *philo, int type);
+void				ft_print(t_philo *philo, t_actions type);
 void				ft_usleep(int i);
 long				get_timestamp(void);
 int					nbr_ft(const char *str, int sign);

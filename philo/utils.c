@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:56:40 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/12 01:11:35 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 18:42:42 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_usleep(int i)
 
 void	ft_print(t_philo *philo, t_actions type, int now)
 {
-	pthread_mutex_lock(&philo->states->print);
+	pthread_mutex_lock(&philo->states->sem.print);
 	if (type == FORK_LEFT)
 		printf(RED "%d %d has taken a fork\n" RESET, now, philo->id);
 	else if (type == FORK_RIGHT)
@@ -81,5 +81,5 @@ void	ft_print(t_philo *philo, t_actions type, int now)
 		printf(CYAN "%d %d is thinking\n" RESET, now, philo->id);
 	else if (type == DIED)
 		printf(YELLOW "%d %d died\n" RESET, now, philo->id);
-	pthread_mutex_unlock(&philo->states->print);
+	pthread_mutex_unlock(&philo->states->sem.print);
 }

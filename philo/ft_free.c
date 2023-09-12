@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:16:06 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/12 01:09:42 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 18:42:35 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_free(t_states *states)
 
 	ft_join(states);
 	err = pthread_mutex_destroy(&states->lock);
-	err = pthread_mutex_destroy(&states->print);
+	err = pthread_mutex_destroy(&states->sem.print);
 	if (err)
 		return (err);
 	err = free_forks(states, states->number_philos);

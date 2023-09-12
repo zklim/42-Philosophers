@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 13:59:04 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 18:46:29 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_states(char **av, t_states *states)
 {
+	ft_sem_unlink();
 	states->number_philos = ft_atoi(*av);
 	states->time_to_die = ft_atoi(*(av + 1));
 	states->time_to_eat = ft_atoi(*(av + 2));
@@ -23,12 +24,13 @@ void	init_states(char **av, t_states *states)
 	else
 		states->times_must_eat = -1;
 	states->finish_eat = 0;
-	pthread_mutex_init(&states->lock, NULL);
-	states->forks = sem_open("gib_fork", O_CREAT, 0644, states->number_philos);
-	states->dead = sem_open("dead", O_CREAT, 0644, states->number_philos);
-	states->print = sem_open("print", O_CREAT, 0644, 1);
+	states->sem.forks = sem_open("gib_fork", O_CREAT, 0644,
+			states->number_philos);
+	states->sem.dead = sem_open("dead", O_CREAT, 0644, states->number_philos);
 	if (states->times_must_eat > 0)
-		states->eats = sem_open("eat", O_CREAT, 0644, states->number_philos);
+		states->sem.eats = sem_open("eat", O_CREAT, 0644,
+				states->number_philos);
+	states->sem.print = sem_open("print", O_CREAT, 0644, 1);
 }
 
 int	invalidate(int ac, char **av)

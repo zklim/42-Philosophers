@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:56:40 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/08 00:10:49 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 17:29:24 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,25 +66,18 @@ void	ft_usleep(int i)
 		usleep(500);
 }
 
-void	unlock_print(t_philo *philo, int type)
+void	ft_print(t_philo *philo, t_actions type)
 {
-	if (type == FORK)
+	pthread_mutex_lock(&philo->lock);
+	if (type == FORK_LEFT)
 		printf(RED "%d %d has taken a fork\n" RESET, philo->now, philo->id);
-	else if (type == FORK2)
+	else if (type == FORK_RIGHT)
 		printf(MAGENTA "%d %d has taken a fork\n" RESET, philo->now, philo->id);
 	else if (type == EAT)
-	{
 		printf(GREEN "%d %d is eating\n" RESET, philo->last_eat, philo->id);
-		philo->eat_count++;
-	}
 	else if (type == SLEEP)
 		printf(BLUE "%d %d is sleeping\n" RESET, philo->now, philo->id);
 	else if (type == THINK)
 		printf(CYAN "%d %d is thinking\n" RESET, philo->now, philo->id);
-	else if (type == DIED)
-	{
-		printf(YELLOW "%d %d died\n" RESET, philo->now, philo->id);
-		return ;
-	}
-	sem_post(philo->states->print);
+	pthread_mutex_unlock(&philo->lock);
 }
