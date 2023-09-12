@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 13:16:06 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/10 17:07:04 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/12 01:09:42 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	free_forks(t_states *states, int end)
 	i = 0;
 	while (i < end)
 	{
-		err = pthread_mutex_destroy(&states->philos[i].fork_l);
+		err = pthread_mutex_destroy(&states->philos[i].fork.left);
 		if (err)
 			return (err);
 		i++;
