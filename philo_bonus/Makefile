@@ -6,7 +6,7 @@
 #    By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/15 16:28:26 by zhlim             #+#    #+#              #
-#    Updated: 2023/09/12 18:43:56 by zhlim            ###   ########.fr        #
+#    Updated: 2023/09/13 15:39:51 by zhlim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SRCS			= $(addsuffix .c, philo_bonus routine ft_fork create_philo utils utils2 m
 OBJS			= $(patsubst %.c, %.o, $(SRCS))
 
 CC				= gcc
-CFLAGS			= -Wall -Werror -Wextra 
+CFLAGS			= -Wall -Werror -Wextra
 # -fsanitize=thread
 
 RM				= rm -f

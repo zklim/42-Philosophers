@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:00:12 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/12 18:46:05 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/13 15:32:44 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->lock);
 	philo->last_eat = get_timestamp() - philo->states->start;
-	philo->eat_count++;
 	pthread_mutex_unlock(&philo->lock);
 	if (is_dead(philo))
 		ft_exit(philo);
 	ft_print(philo, EAT);
+	pthread_mutex_lock(&philo->lock);
+	philo->eat_count++;
+	pthread_mutex_unlock(&philo->lock);
 	ft_usleep(philo->states->time_to_eat);
 	sem_post(philo->states->sem.forks);
 	sem_post(philo->states->sem.forks);

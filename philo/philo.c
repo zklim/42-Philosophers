@@ -6,7 +6,7 @@
 /*   By: zhlim <zhlim@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 15:50:02 by zhlim             #+#    #+#             */
-/*   Updated: 2023/09/12 18:42:37 by zhlim            ###   ########.fr       */
+/*   Updated: 2023/09/13 15:22:01 by zhlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	init_states(char **av, t_states *states)
 	states->someone_died = 0;
 	states->finish_eat = 0;
 	pthread_mutex_init(&states->lock, NULL);
-	pthread_mutex_init(&states->sem.print, NULL);
+	pthread_mutex_init(&states->print, NULL);
 }
 
 int	invalidate(int ac, char **av)
